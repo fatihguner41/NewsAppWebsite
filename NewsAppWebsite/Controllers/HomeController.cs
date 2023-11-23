@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Collections;
 using System.Diagnostics;
 using System.Reflection.Emit;
+using System.Security.Cryptography.X509Certificates;
 
 namespace NewsAppWebsite.Controllers
 {
@@ -16,7 +17,7 @@ namespace NewsAppWebsite.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IFirebaseService _firebaseService;
-        private readonly int getNewsAmount = 500;
+        private readonly int getNewsAmount = 250;
 
         public HomeController(ILogger<HomeController> logger,IFirebaseService firebaseService)
         {
@@ -45,30 +46,48 @@ namespace NewsAppWebsite.Controllers
             return View("index",indexViewModel);
         }
 
-        public ActionResult GetMoreNews(string type,string name,string lastNewsDate)
+        public ActionResult GetMoreNews(string type,string name,string lastNewsDate="")
         {
             name = System.Web.HttpUtility.HtmlDecode(name);
-            Console.WriteLine(name);
+            Dictionary<string, News> news= new Dictionary<string, News>();
+            int amount = getNewsAmount;
+            while(news.Count < 10 && amount<8000)
+            {
+
+                (lastNewsDate, news) = GetNewsFromFirebase(type, name, lastNewsDate, news,amount);
+                amount = amount * 2;
+            }
+
+            NewsPartialViewModel partialViewModel = new NewsPartialViewModel(news);
+            return PartialView("_NewsPartial", partialViewModel);
+            
+            
+        }
+
+        private (string ,Dictionary<string, News>) GetNewsFromFirebase(string type, string name, string lastNewsDate, Dictionary<string, News> news,int amount)
+        {
             QueryBuilder query = QueryBuilder.New();
 
+            Console.WriteLine(type+ name+ lastNewsDate+"----"+amount);
             if (lastNewsDate == "")
             {
-                query = query.OrderBy("haber_date").LimitToLast(getNewsAmount);
+                query = query.OrderBy("haber_date").LimitToLast(amount);
 
-            }else 
-            {
-                 query = query
-             .OrderBy("haber_date")
-             .EndAt(lastNewsDate)
-             .LimitToLast(getNewsAmount); // İlk bin haber için
             }
-            
+            else
+            {
+                query = query
+            .OrderBy("haber_date")
+            .EndAt(lastNewsDate)
+            .LimitToLast(amount); // İlk bin haber için
+            }
+
 
 
             FirebaseResponse response = _firebaseService.FirebaseClient.Get("haberler", query);
 
             Dictionary<String, News> newsDict = new Dictionary<string, News>();
-            Dictionary<string, News> filteredNewsDict= new Dictionary<string, News>();
+            Dictionary<string, News> filteredNewsDict = new Dictionary<string, News>();
 
             if (response.Body != "null")
             {
@@ -79,28 +98,25 @@ namespace NewsAppWebsite.Controllers
 
                 filteredNewsDict = selectedNews.ToDictionary(news => news.haber_link);
                 filteredNewsDict = GetFilteredNews(type, name, filteredNewsDict);
-                /*
-                if (filteredNewsDict.Count < 5 )
+
+
+                // dictionary2 içindeki çiftleri birleşikDictionary'e ekleyin
+                foreach (var pair in filteredNewsDict)
                 {
-                    Console.WriteLine(filteredNewsDict.Count);
-                    Console.WriteLine(type+name+lastNewsDate);
-                    GetMoreNews(type, name, lastNewsDate);
-                }*/
+                    // Aynı anahtar değerine sahip bir çift dictionary1'de ise silin
+                    if (!news.ContainsKey(pair.Key))
+                    {
+
+                        news[pair.Key] = pair.Value;
+                    }
+
+                }
+
+
+                return (lastNewsDate,news);
             }
-            else
-            {
-                Console.WriteLine("Düğüm boş(getmorenews).");
-            }
 
-
-            NewsPartialViewModel indexViewModel = new NewsPartialViewModel(filteredNewsDict);
-            
-            return PartialView("_NewsPartial", indexViewModel);
-        }
-
-        private NewsPartialViewModel GetNewsFromFirebase()
-        {
-
+            return ("",null);
         }
         public IActionResult Privacy()
         {

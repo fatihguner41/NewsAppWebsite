@@ -31,27 +31,29 @@
         function getMoreNews() {
             $.get("/Home/GetMoreNews?type="+type+"&name="+name+"&lastNewsDate="+getLastNewsDate() , function (data) {
 
-                var tempDiv = $("<div>").html(data);
+                var numberOfNews = $(data).find('div').length;
+                console.log(numberOfNews);
+                if (numberOfNews > 0) {
 
-                // Bu div içindeki "haber-detay" sınıfına sahip elementleri seç
-                var haberDetayElements = tempDiv.find(".haber-detay");
-
-                if (data.length > 0) {
-                    $(".news-div").append(data); // Yeni haberleri mevcut haberlerin sonuna ekler
                     
-                }
-                if (haberDetayElements.length < 5) {
+                    $(".news-div").append(data); // Yeni haberleri mevcut haberlerin sonuna ekler
 
-                    console.log($(".news-div .haber-detay").length);
-                    getMoreNews();
+                } 
+                else{
+                    $(".news-div").append("<p style='color: white' >Haber bulunamadı.</p>");
                 }
 
             });
         }
 
+
+
+
         function getLastNewsDate() {
             var lastNewsDate = $(".news-div .haber-detay:last").data("haber-string");
-            console.log(lastNewsDate);
+            if (typeof lastNewsDate === "undefined") {
+                lastNewsDate = "";
+            }
             return lastNewsDate;
         }
 

@@ -4,7 +4,7 @@
 
 @foreach (var (key, value) in Model.newsDict)
 {
-    <div class="haber-detay" data-haber-string="@value.haber_date" onclick="redirectToNews('@value.haber_link')" style="cursor: pointer;">
+    <div class="haber-detay" data-haber-string="@value.haber_date" data-haber-link="@value.haber_link" onclick="redirectToNews('@value.haber_link')" style="cursor: pointer;">
         <div class="haber-resmi">
             <img src="@value.haber_img" >
         </div>
