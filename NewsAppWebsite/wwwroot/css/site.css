@@ -1,0 +1,63 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Genel Stil */
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: rgb(43, 43, 43);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+/* Haber Kartlarý */
+.haber-detay {
+    width: 300px;
+    height: calc(33.33% - 20px);
+    margin: 10px;
+    padding: 15px;
+    background-color: rgb(69, 50, 50);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: box-shadow 0.3s ease-in-out;
+    display: inline-block;
+    vertical-align: top;
+}
+
+    .haber-detay:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+.haber-resmi img {
+    max-width: 100%;
+    height: auto;
+}
+
+.haber-icerik h2 {
+    font-size: 1.5em;
+    margin-top: 10px;
+    color:lightgray;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.haber-icerik p {
+    margin: 5px 0;
+    font-size: 0.8em;
+    color: #888;
+}
+
+.page-title {
+    color: lightgray;
+    font-size: 30px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-left:3cm;
+}

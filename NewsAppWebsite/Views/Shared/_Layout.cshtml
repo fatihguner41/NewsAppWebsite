@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - NewsAppWebsite</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        #sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: rgb(19,19,19); /* Koyu Gri */
+            color: lightgray;
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+
+
+        #content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        #menu-toggle {
+            display: none;
+        }
+
+        .submenu {
+            padding-left: 15px;
+        }
+
+        #sidebar-header {
+            font-size: 32px;
+            padding: 20px 15px;
+            
+            margin-bottom: 20px;
+            color: rgb(218, 11, 11);
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .list-group-header {
+            background-color: rgb(19,19,19); /* Koyu Gri */
+            border: none;
+            border-radius: 0;
+            color: lightgray;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .list-group-item {
+            background-color: rgb(19,19,19); /* Koyu Gri */
+            border: none;
+            border-radius: 0;
+            color: lightgray;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            padding: 15px;
+            transition: background-color 0.3s;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+
+            .list-group-item:hover {
+                background-color: rgb(30,30,30); /* Açık Gri */
+                color: white;
+            }
+
+            .list-group-item.active {
+                font-weight: bold;
+                background-color: rgb(30,30,30); /* Açık Gri */
+            }
+
+            .list-group-item:focus {
+                font-weight: bold;
+                background-color: rgb(30,30,30); /* Açık Gri */
+            }
+
+
+        #sidebar::-webkit-scrollbar {
+            width: 0 !important;
+            display: none;
+        }
+
+        #sidebar .list-group .list-group-item {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="menu-toggle" />
+    <label for="menu-toggle">&#9776; Menü</label>
+
+    <div id="sidebar">
+        <div id="sidebar-header">
+            NewsApp
+        </div>
+        <div class="list-group">
+            <a href="@Url.Action("index", "Home")" class="list-group-item list-group-item-action active">Ana Sayfa</a>
+            <hr />
+            <p class="list-group-header">Kategoriler</p>
+            <div class="submenu">
+                <a href="@Url.Action("Category", "Home", new { category = "gündem" })" class="list-group-item list-group-item-action">Gündem</a>
+                <a href="@Url.Action("Category", "Home", new { category = "spor" })" class="list-group-item list-group-item-action">Spor</a>
+                <a href="@Url.Action("Category", "Home", new { category = "siyaset" })" class="list-group-item list-group-item-action">Siyaset</a>
+                <a href="@Url.Action("Category", "Home", new { category = "ekonomi" })" class="list-group-item list-group-item-action">Ekonomi</a>
+                <a href="@Url.Action("Category", "Home", new { category = "bilim ve teknoloji" })" class="list-group-item list-group-item-action">Bilim ve Teknoloji</a>
+                <a href="@Url.Action("Category", "Home", new { category = "yaşam" })" class="list-group-item list-group-item-action">Yaşam</a>
+            </div>
+            <hr />
+            <p class="list-group-header">Gazeteler</p>
+            <div class="submenu">
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "CNN TÜRK" })" class="list-group-item list-group-item-action">CNN TÜRK</a>
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "Milliyet" })" class="list-group-item list-group-item-action">Milliyet</a>
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "Sözcü" })" class="list-group-item list-group-item-action">Sözcü</a>
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "Habertürk" })" class="list-group-item list-group-item-action">Habertürk</a>
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "AHABER" })" class="list-group-item list-group-item-action">AHABER</a>
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "TRTHaber" })" class="list-group-item list-group-item-action">TRTHaber</a>
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "SABAH" })" class="list-group-item list-group-item-action">SABAH</a>
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "NTV" })" class="list-group-item list-group-item-action">NTV</a>
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "Takvim" })" class="list-group-item list-group-item-action">Takvim</a>
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "Yeni Şafak" })" class="list-group-item list-group-item-action">Yeni Şafak</a>
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "Fotomaç" })" class="list-group-item list-group-item-action">Fotomaç</a>
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "Yeni Akit" })" class="list-group-item list-group-item-action">Yeni Akit</a>
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "Cumhuriyet" })" class="list-group-item list-group-item-action">Cumhuriyet</a>
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "ShiftDelete" })" class="list-group-item list-group-item-action">ShiftDelete</a>
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "DonanımHaber" })" class="list-group-item list-group-item-action">DonanımHaber</a>
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "Akşam" })" class="list-group-item list-group-item-action">Akşam</a>
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "Hürriyet" })" class="list-group-item list-group-item-action">Hürriyet</a>
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "Mynet" })" class="list-group-item list-group-item-action">Mynet</a>
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "Star" })" class="list-group-item list-group-item-action">Star</a>
+                <a href="@Url.Action("Newspaper", "Home", new { newspaper = "Ekonomim" })" class="list-group-item list-group-item-action">Ekonomim</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="content">
+        @RenderBody()
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

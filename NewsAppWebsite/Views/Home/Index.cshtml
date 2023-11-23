@@ -1,0 +1,89 @@
+﻿@model IndexViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<html>
+
+
+<link rel="stylesheet" type="text/css" href="~/css/site.css">
+
+<body >
+
+    <div class="body-div">
+
+        <p class="page-title">@Model.name</p>
+    
+        <div class="news-div" style="padding-left:100px">
+
+            
+        </div>
+
+    </div>
+</body>
+
+@section Scripts{
+    <script>
+
+        var type = encodeURIComponent("@Model.type");
+        var name = encodeURIComponent("@Model.name");
+        function getMoreNews() {
+            $.get("/Home/GetMoreNews?type="+type+"&name="+name+"&lastNewsDate="+getLastNewsDate() , function (data) {
+
+                var tempDiv = $("<div>").html(data);
+
+                // Bu div içindeki "haber-detay" sınıfına sahip elementleri seç
+                var haberDetayElements = tempDiv.find(".haber-detay");
+
+                if (data.length > 0) {
+                    $(".news-div").append(data); // Yeni haberleri mevcut haberlerin sonuna ekler
+                    
+                }
+                if (haberDetayElements.length < 5) {
+
+                    console.log($(".news-div .haber-detay").length);
+                    getMoreNews();
+                }
+
+            });
+        }
+
+        function getLastNewsDate() {
+            var lastNewsDate = $(".news-div .haber-detay:last").data("haber-string");
+            console.log(lastNewsDate);
+            return lastNewsDate;
+        }
+
+        var ScrollDebounce = true;
+
+        $(window).on('scroll', function () {
+            if (ScrollDebounce ) {
+                
+
+                    if ($(window).scrollTop() + $(window).height() +200 > $(document).height()) {
+                        // Sayfanın sonuna geldiğinde burada bir işlem yapabilirsiniz.
+                        // Örneğin, yeni haberleri yükleyebilirsiniz.
+                        ScrollDebounce = false;
+                        
+                        getMoreNews();
+                        setTimeout(function () { ScrollDebounce = true; }, 500);
+                    }
+
+                
+            }
+        })
+        
+
+        $(document).ready(function () {
+
+            // İlk sayfa yüklendiğinde de verileri almak için bu işlemi çağırın
+            getMoreNews();
+        });
+
+
+    </script>
+}
+</html>
+
+                    

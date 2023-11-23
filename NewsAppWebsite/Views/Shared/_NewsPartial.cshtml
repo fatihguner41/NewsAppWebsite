@@ -1,0 +1,23 @@
+﻿
+@model NewsPartialViewModel
+
+
+@foreach (var (key, value) in Model.newsDict)
+{
+    <div class="haber-detay" data-haber-string="@value.haber_date" onclick="redirectToNews('@value.haber_link')" style="cursor: pointer;">
+        <div class="haber-resmi">
+            <img src="@value.haber_img" >
+        </div>
+        <div class="haber-icerik">
+            <h2 class="haber-baslik">@value.haber_title</h2>
+            <p>Paylaşılma Tarihi: @value.haber_date</p>
+            <p>Haber Kaynağı: @value.haber_source</p>
+        </div>
+    </div>
+}
+
+<script>
+    function redirectToNews(link) {
+        window.open(link, '_blank');
+    }
+</script>
