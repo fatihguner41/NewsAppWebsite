@@ -104,6 +104,33 @@
     <input type="checkbox" id="menu-toggle" />
     <label for="menu-toggle">&#9776; Menü</label>
 
+    <header class="p-3 text-bg-dark">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+                </a>
+
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                   
+                </ul>
+
+
+                <div class="text-end">
+                    <div class="row">
+                        <div class="col-auto">
+                            <input id="search-input" type="search" class="form-control form-control-dark text-bg-dark" placeholder="İlgini çeken konu ne?" aria-label="Search">
+                        </div>
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-warning" id="search-button" style="margin-right:10px">Ara</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
     <div id="sidebar">
         <div id="sidebar-header">
             NewsApp
@@ -151,9 +178,28 @@
         @RenderBody()
     </div>
 
+    
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    <script>
+        $(document).ready(function () {
+            // Arama butonuna tıklandığında
+            $("#search-button").on("click", function () {
+                // Arama kutusundaki değeri al
+                var searchTerm = $("#search-input").val();
+
+                // Yönlendirme işlemi
+                if (searchTerm != "") {
+                    console.log(searchTerm);
+                    window.location.href = "/Home/Search?text=" + searchTerm;
+                }
+            });
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

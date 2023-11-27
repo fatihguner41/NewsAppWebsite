@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Reflection.Emit;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 
 namespace NewsAppWebsite.Controllers
 {
@@ -48,12 +49,18 @@ namespace NewsAppWebsite.Controllers
             return View("index",indexViewModel);
         }
 
-        public ActionResult GetMoreNews(string type,string name,string lastNewsDate="")
+        public IActionResult Search(string text)
+        {
+            IndexViewModel indexViewModel = new IndexViewModel("search", text);
+            return View("index", indexViewModel);
+        }
+
+        public ActionResult GetMoreNews(string type="search",string name="",string lastNewsDate="")
         {
             name = System.Web.HttpUtility.HtmlDecode(name);
             Dictionary<string, News> news= new Dictionary<string, News>();
             int amount = getNewsAmount;
-            while(news.Count < 10 && amount<8000)
+            while(news.Count < 10 && amount<=16000)
             {
 
                 (lastNewsDate, news) = GetNewsFromFirebase(type, name, lastNewsDate, news,amount);
@@ -153,8 +160,42 @@ namespace NewsAppWebsite.Controllers
                 var selectedNews = news.Where(pair => pair.Value.haber_source == name)
                                        .ToDictionary(pair => pair.Key, pair => pair.Value);
                 return selectedNews;
+            }else if(type == "search")
+            {
+                var selectedNews = news.Where(pair => CompareStrings( pair.Value.haber_desc,name))
+                                       .ToDictionary(pair => pair.Key, pair => pair.Value);
+                return selectedNews;
             }
             return news;
+        }
+
+        public static bool CompareStrings(string metin1, string metin2)
+        {
+            // Boşlukları ve büyük küçük harf farklarını göz ardı et
+            string temizMetin1 = CleanString(metin1);
+            string temizMetin2 = CleanString(metin2);
+
+            // Temizlenmiş metinleri karşılaştır
+            return temizMetin1.Contains(temizMetin2);
+        }
+
+        public static string CleanString(string metin)
+        {
+            // Boşlukları, kesme işaretlerini ve diğer gereksiz karakterleri temizle
+            if(metin==null)
+            {
+                return string.Empty;
+            }
+            var temizMetinBuilder = new StringBuilder();
+            foreach (char karakter in metin.ToLower())
+            {
+                if (Char.IsLetterOrDigit(karakter))
+                {
+                    temizMetinBuilder.Append(karakter);
+                }
+            }
+
+            return temizMetinBuilder.ToString();
         }
 
         private string IncrementDate(string date = "")

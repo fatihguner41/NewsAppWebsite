@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Home Page";
+    
 }
 
 <html>
@@ -19,7 +20,9 @@
 
             
         </div>
-
+        <div id="loading" style="margin-left:3cm" class="spinner-border text-danger" role="status">
+            <span class="sr-only"></span>
+        </div>
     </div>
 </body>
 
@@ -28,20 +31,26 @@
 
         var type = encodeURIComponent("@Model.type");
         var name = encodeURIComponent("@Model.name");
+
+        var scrolledDown = false;
         function getMoreNews() {
+            showLoading();
             $.get("/Home/GetMoreNews?type="+type+"&name="+name+"&lastNewsDate="+getLastNewsDate() , function (data) {
 
                 var numberOfNews = $(data).find('div').length;
-                console.log(numberOfNews);
+
+                hideLoading();
+
+                scrolledDown = false;
                 if (numberOfNews > 0) {
 
-                    
                     $(".news-div").append(data); // Yeni haberleri mevcut haberlerin sonuna ekler
 
                 } 
                 else{
-                    $(".news-div").append("<p style='color: white' >Haber bulunamadı.</p>");
+                    $(".news-div").append("<p class='news-none' >Haber bulunamadı.</p>");
                 }
+
 
             });
         }
@@ -63,11 +72,11 @@
             if (ScrollDebounce ) {
                 
 
-                    if ($(window).scrollTop() + $(window).height() +200 > $(document).height()) {
+                    if ($(window).scrollTop() + $(window).height() +200 > $(document).height() && !scrolledDown) {
                         // Sayfanın sonuna geldiğinde burada bir işlem yapabilirsiniz.
                         // Örneğin, yeni haberleri yükleyebilirsiniz.
                         ScrollDebounce = false;
-                        
+                        scrolledDown = true;
                         getMoreNews();
                         setTimeout(function () { ScrollDebounce = true; }, 500);
                     }
@@ -75,11 +84,17 @@
                 
             }
         })
-        
+
+        function showLoading() {
+            $("#loading").show();
+        }
+
+        function hideLoading() {
+            $("#loading").hide();
+        }
 
         $(document).ready(function () {
 
-            // İlk sayfa yüklendiğinde de verileri almak için bu işlemi çağırın
             getMoreNews();
         });
 
