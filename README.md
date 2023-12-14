@@ -32,3 +32,13 @@ New articles are pulled and added to the Firebase database from our cloud server
 
 ### Search Box
 - Enter any topic into the search box at the top of the page to explore the latest news on the desired subject.
+
+## Screenshots:
+### Home page - Ana sayfa:
+![Home page](https://github.com/fatihguner41/NewsAppWebsite/blob/master/home.PNG)
+### Search by category  - Kategoriye göre arama yapma :
+![Category page](https://github.com/fatihguner41/NewsAppWebsite/blob/master/categories.PNG)
+### Search by newspaper - Gazeteye göre arama yapma:
+![Newspaper page](https://github.com/fatihguner41/NewsAppWebsite/blob/master/newspapers.PNG)
+### Searchbar search - Arama kutusu kullanımı:
+![Searchbar example](https://github.com/fatihguner41/NewsAppWebsite/blob/master/searchbar.PNG)
