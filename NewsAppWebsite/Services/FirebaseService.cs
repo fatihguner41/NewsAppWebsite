@@ -1,6 +1,6 @@
 ﻿namespace NewsAppWebsite.Services
 {
-
+    using dotenv.net;
     using FireSharp.Config;
     using FireSharp.Interfaces;
     using FireSharp.Response;
@@ -17,10 +17,12 @@
 
         public FirebaseService()
         {
+
             // Firebase yapılandırma bilgilerini IConfiguration üzerinden alın
             IFirebaseConfig config = new FirebaseConfig
             {
-                AuthSecret = "TZnlMsIRO2w2F5t59vMSnWZOkFwOAqqPr8X94Vpn",
+                // add your secret to .env file
+                AuthSecret = Environment.GetEnvironmentVariable("FIREBASE_SECRET"),
                 BasePath = "https://haberler-a63c9-default-rtdb.europe-west1.firebasedatabase.app/"
             };
 

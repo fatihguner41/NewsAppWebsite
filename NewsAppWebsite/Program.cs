@@ -1,5 +1,6 @@
 using NewsAppWebsite.Interfaces;
 using NewsAppWebsite.Services;
+using dotenv.net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,5 +28,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+DotEnv.Load();
 
 app.Run();

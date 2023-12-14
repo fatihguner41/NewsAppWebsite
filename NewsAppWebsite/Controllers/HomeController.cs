@@ -94,7 +94,8 @@ namespace NewsAppWebsite.Controllers
             }
 
 
-
+            // if you get an error in this line its probably because you forgot to add your firebase secret in .env file
+            // crete a .env file in project main folder "NewsAppWebsite" and put your key as "FIREBASE_SECRET"
             FirebaseResponse response = _firebaseService.FirebaseClient.Get("haberler", query);
 
             Dictionary<String, News> newsDict = new Dictionary<string, News>();
